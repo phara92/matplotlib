@@ -215,6 +215,10 @@ class LatexManager:
             r"\usepackage{graphicx}",
             latex_preamble,
             latex_fontspec,
+            r"\ifx\pdftexversion\relax",
+            r"\else\usepackage[utf8]{inputenc}",
+            r"\DeclareUnicodeCharacter{2212}{-}",
+            r"\fi",
             r"\begin{document}",
             r"text $math \mu$",  # force latex to load fonts now
             r"\typeout{pgf_backend_query_start}",
