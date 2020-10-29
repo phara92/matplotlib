@@ -350,3 +350,19 @@ def test_pgf_problem(fig_test, fig_ref):
     plt.figtext(.5, .5, "$-1$")
     plt.figure(fig_ref.number)
     plt.figtext(.5, .5, "$\N{MINUS SIGN}1$")
+
+
+@pytest.mark.parametrize("texsystem", ("pdflatex", "xelatex", "lualatex"))
+def test_trigger_pgf_problem(texsystem):
+    mpl.rcParams["text.usetex"] = True
+    mpl.rcParams["pgf.texsystem"] = texsystem
+
+    fig = plt.figure()
+    plt.figtext(.5, .5, "$-1$")
+    plt.savefig("asdf.pgf")
+    plt.close()
+
+    fig = plt.figure()
+    plt.figtext(.5, .5, "$\N{MINUS SIGN}1$")
+    plt.savefig("asdf.pgf")
+    plt.close()
