@@ -12,8 +12,10 @@ import pytest
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.testing.compare import compare_images, ImageComparisonFailure
-from matplotlib.testing.decorators import image_comparison, _image_directories
 from matplotlib.backends.backend_pgf import PdfPages, common_texification
+from matplotlib.testing.decorators import (_image_directories,
+                                           check_figures_equal,
+                                           image_comparison)
 
 baseline_dir, result_dir = _image_directories(lambda: 'dummy func')
 
@@ -338,3 +340,13 @@ def test_unknown_font(caplog):
         plt.savefig(BytesIO(), format="pgf")
     assert "Ignoring unknown font: this-font-does-not-exist" in [
         r.getMessage() for r in caplog.records]
+
+
+@check_figures_equal()
+def test_pgf_problem(fig_test, fig_ref):
+    # FIXME: This test actually does not compare the pgf output.
+    mpl.rcParams["text.usetex"] = True
+    plt.figure(fig_test.number)
+    plt.figtext(.5, .5, "$-1$")
+    plt.figure(fig_ref.number)
+    plt.figtext(.5, .5, "$\N{MINUS SIGN}1$")
