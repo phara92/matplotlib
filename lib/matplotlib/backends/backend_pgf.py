@@ -53,6 +53,10 @@ def get_fontspec():
             latex_fontspec.append(r"\%s{%s}[Path=%s]" % (
                 command, path.name, path.parent.as_posix() + "/"))
 
+    if texcommand == "pdflatex":
+        latex_fontspec.extend([r"\usepackage[utf8]{inputenc}",
+                               r"\DeclareUnicodeCharacter{2212}{-}"])
+
     return "\n".join(latex_fontspec)
 
 
